@@ -1,0 +1,14 @@
+{
+  "name": "TriplydbJS",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "dependencies": {
+    "@triply/triplydb": "^2.1.29",
+    "superagent": "^6.1.0",
+    "typescript": "^4.2.4"
+  },
+  "devDependencies": {
+    "@types/superagent": "^4.1.10"
+  }
+}
