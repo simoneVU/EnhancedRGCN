@@ -1,4 +1,3 @@
-import os.path as osp
 from  EntitiesIOSPress import EntitiesIOSPress
 
 import torch
@@ -29,6 +28,7 @@ print('done edges')
 
 class Net(torch.nn.Module):
     def __init__(self):
+        super(Net, self).__init__()
         self.conv1 = RGCNConv(data.num_nodes, 16, data.num_relations,
                                 num_bases=30)
         self.conv2 = RGCNConv(16, data.num_classes, data.num_relations,
@@ -51,8 +51,7 @@ class Net(torch.nn.Module):
 
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 model, data = Net().to(device), data.to(device)
-optimizer = torch.optim.Adam(params=model.parameters(), lr=0.01)
-
+optimizer = torch.optim.Adam(model.parameters(), lr=0.01, weight_decay=0.0005)
 
 def get_link_labels(pos_edge_index, neg_edge_index):
     E = pos_edge_index.size(1) + neg_edge_index.size(1)
