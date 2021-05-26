@@ -15,7 +15,8 @@ print('done processing')
 data = train_test_split_edges(dataset.data)
 print('done edges')
 
-'''              PROBLEM with def forward() in rgcn_conv.py in pytorch_geometric when the train is run.
+'''              
+                PROBLEM with def forward() in rgcn_conv.py in pytorch_geometric when the train is run.
 
                  The masked_edge_index_function does not return the masked_edge_index correctly.
                  If I return tmp (as masked edge_index) it gives me an error when it checks the input with __check_input__ in

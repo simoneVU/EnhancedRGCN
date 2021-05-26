@@ -87,7 +87,7 @@ class MessagePassing(torch.nn.Module):
 
         if isinstance(edge_index, Tensor):
             assert edge_index.dtype == torch.long
-            assert edge_index.dim() == 2
+            assert edge_index.dim() == 2 # it ends up to be 3 instead of 2.
             assert edge_index.size(0) == 2
             if size is not None:
                 the_size[0] = size[0]
