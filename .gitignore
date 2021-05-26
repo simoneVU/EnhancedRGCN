@@ -2,3 +2,4 @@
 TriplydbJS/node_modules/
 TriplydbJS/.DS_Store
 pytorch_geometric/
+__pycache__/
