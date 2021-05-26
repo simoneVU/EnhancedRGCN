@@ -24,7 +24,7 @@ def masked_edge_index(edge_index, edge_mask):
     # type: (SparseTensor, Tensor) -> SparseTensor
     pass
 
-
+#Here is the masked_edge_index function which does returns an empty tensor (in the pytorch folder this is in: pytorch_geometric/torch_geometric/nn/models/rgcn_conv.py)
 def masked_edge_index(edge_index, edge_mask):
     if isinstance(edge_index, Tensor):
         return edge_index[:, edge_mask]
@@ -92,7 +92,8 @@ class RGCNConv(MessagePassing):
                  aggr: str = 'mean',
                  root_weight: bool = True,
                  bias: bool = True, **kwargs):  # yapf: disable
-
+                 
+        #Here is the variable node_dim = 0
         super(RGCNConv, self).__init__(aggr=aggr, node_dim=0, **kwargs)
 
         if num_bases is not None and num_blocks is not None:

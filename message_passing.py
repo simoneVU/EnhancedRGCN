@@ -51,7 +51,7 @@ class MessagePassing(torch.nn.Module):
         'edge_index', 'adj_t', 'edge_index_i', 'edge_index_j', 'size',
         'size_i', 'size_j', 'ptr', 'index', 'dim_size'
     }
-
+    #Initialize self.node_dim = -2 as default value.
     def __init__(self, aggr: Optional[str] = "add",
                  flow: str = "source_to_target", node_dim: int = -2):
 
@@ -62,7 +62,6 @@ class MessagePassing(torch.nn.Module):
 
         self.flow = flow
         assert self.flow in ['source_to_target', 'target_to_source']
-
         self.node_dim = node_dim
 
         self.inspector = Inspector(self)
@@ -121,6 +120,7 @@ class MessagePassing(torch.nn.Module):
                 (f'Encountered tensor with size {src.size(self.node_dim)} in '
                  f'dimension {self.node_dim}, but expected size {the_size}.'))
 
+    #Here is __lift__function that uses self.node_dim
     def __lift__(self, src, edge_index, dim):
         if isinstance(edge_index, Tensor):
             index = edge_index[dim]
@@ -139,6 +139,8 @@ class MessagePassing(torch.nn.Module):
         i, j = (1, 0) if self.flow == 'source_to_target' else (0, 1)
 
         out = {}
+        #this is the part where it fails running it, and my intution is that the -2 in arg[-2] is
+        #relates to the node dimenision, which for the GCNConv is -2 (as default), but for the RGCN is 0.
         for arg in args:
             if arg[-2:] not in ['_i', '_j']:
                 out[arg] = kwargs.get(arg, Parameter.empty)
@@ -213,6 +215,7 @@ class MessagePassing(torch.nn.Module):
             **kwargs: Any additional data which is needed to construct and
                 aggregate messages, and to update node embeddings.
         """
+        #This is the __check_input__ function that returns the other error
         size = self.__check_input__(edge_index, size)
 
         # Run "fused" message and aggregation (if applicable).
