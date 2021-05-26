@@ -1,5 +1,6 @@
 # Bachelor-Thesis
 
-6th May 2021
+## Installation
 
-Add a sub-graph of IOS PRESS LD Connect KG containing all the entities 
+1) Install conda by following the instructions [here](https://docs.conda.io/projects/continuumio-conda/en/latest/user-guide/install/index.html).
+2) Run the script 'pyg_setup.sh' to set up the conda environment, install all the requirements for pytorch_geometric and install pytorch_geometric. 
