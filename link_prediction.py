@@ -20,6 +20,16 @@ print('done edges')
 class Net(torch.nn.Module):
     def __init__(self):
         super(Net, self).__init__()
+        '''      PROBLEM with def forward() in rgcn_conv.py in pytorch_geometric when the train is run.
+
+                 The masked_edge_index_function does not return the masked_edge_index correctly.
+                 If I return tmp (as masked edge_index) it gives me an error when it checks the input with __check_input__ in
+                 def propagate(...) in torch_geometric/nn/conv/message_passing.py at line 220. I tried to change tmp to edge_index
+                 but I still get another problem with the R-GCN because in its setting the node.dim = 0
+                 meanwhile, for the GCN used in their pytorch_geometric/examples/link_pred.py example, the node.dim = -2. Then, I got an error
+                 still in the torch_geometric/nn/conv/message_passing.py but line 160 for the function __lift__
+                 which uses self. and expects it to have node.dim = -2. 
+         '''
         self.conv1 = RGCNConv(data.num_nodes, 16, data.num_relations,
                                 num_bases=30)
         self.conv2 = RGCNConv(16, data.num_classes, data.num_relations,
