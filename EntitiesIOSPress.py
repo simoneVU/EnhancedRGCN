@@ -59,7 +59,7 @@ class EntitiesIOSPress(InMemoryDataset):
         edge_list = sorted(edge_list, key=lambda x: (x[0], x[1], x[2]))
         edge = torch.tensor(edge_list, dtype=torch.long).t().contiguous()
         edge_index, edge_type = edge[:2], edge[2]
-
+        print("Edge_index dim: " + str(len(edge_index[1])) + "Edge_type dim: " + str(len(edge_type)))
         train_y = torch.tensor(list(train_labels_set), dtype=torch.long)
         ######################################### ONE-HOT Enconding for node-feature matrix###################################################
         nodes_dict_final = {"Nodes" : nodes_subjects, "Features" : [i for i in range(len(nodes_objects))]} 
@@ -73,7 +73,6 @@ class EntitiesIOSPress(InMemoryDataset):
         f_tensor = torch.from_numpy(f_array)
         data.x = f_tensor      
         data.edge_index = edge_index
-        print(edge_index.dim())
         data.edge_type = edge_type 
         data.train_y = train_y
         data.num_nodes = edge_index.max().item() + 1

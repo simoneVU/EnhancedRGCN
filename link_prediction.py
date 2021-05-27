@@ -34,11 +34,11 @@ class Net(torch.nn.Module):
                                 num_bases=30)
         self.conv2 = RGCNConv(16, data.num_classes, data.num_relations,
                               num_bases=30)
-    def encode(self):
-        # print(data.train_pos_edge_index)
-        x = self.conv1(data.x, data.train_pos_edge_index)
+
+    def encode(self, edge_type):
+        x = self.conv1(data.x, data.train_pos_edge_index, edge_type)
         x = x.relu()
-        return self.conv2(x, data.train_pos_edge_index)
+        return self.conv2(x, data.train_pos_edge_index, edge_type)
 
     def decode(self, z, pos_edge_index, neg_edge_index):
         edge_index = torch.cat([pos_edge_index, neg_edge_index], dim=-1)
@@ -69,7 +69,7 @@ def train():
         num_neg_samples=data.train_pos_edge_index.size(1))
 
     optimizer.zero_grad()
-    z = model.encode()
+    z = model.encode(dataset.data.edge_type)
     link_logits = model.decode(z, data.train_pos_edge_index, neg_edge_index)
     link_labels = get_link_labels(data.train_pos_edge_index, neg_edge_index)
     loss = F.binary_cross_entropy_with_logits(link_logits, link_labels)
