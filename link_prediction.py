@@ -7,7 +7,9 @@ from sklearn.metrics import roc_auc_score
 from torch_geometric.utils import negative_sampling
 from torch_geometric.nn import RGCNConv
 from torch_geometric.utils import train_test_split_edges
+import logging
 
+logging.basicConfig(filename='RGCNConv.log', filemode='a', format='%(asctime)s %(message)s')
 dataset = EntitiesIOSPress()
 dataset.train_mask = dataset.val_mask = dataset.test_mask = dataset.y = None
 dataset.process()
@@ -32,13 +34,18 @@ class Net(torch.nn.Module):
         super(Net, self).__init__()
         self.conv1 = RGCNConv(data.num_nodes, 16, data.num_relations,
                                 num_bases=30)
+        num_nodes_to_log = str(data.num_nodes)
+        num_rels_to_log = str(data.num_relations)
+        logging.warning(f'RGCNConv({num_nodes_to_log}, 16, {num_rels_to_log})')
         self.conv2 = RGCNConv(16, data.num_classes, data.num_relations,
                               num_bases=30)
 
     def encode(self, edge_type):
-        x = self.conv1(data.x, data.train_pos_edge_index, edge_type)
+        #print("Edge_index dim: " + str(data.edge_index)) returns None???
+        logging.warning(f'self.conv1(data.x = {data.x}, data.train_pos_edge_index_shape = {data.train_pos_edge_index.shape}, edge_type_shape = {(edge_type.shape)})')
+        x = self.conv1(data.x, data.train_pos_edge_index, data.train_pos_edge_index_edge_type)
         x = x.relu()
-        return self.conv2(x, data.train_pos_edge_index, edge_type)
+        return self.conv2(x, data.train_pos_edge_index, data.train_pos_edge_index_edge_type)
 
     def decode(self, z, pos_edge_index, neg_edge_index):
         edge_index = torch.cat([pos_edge_index, neg_edge_index], dim=-1)
@@ -67,9 +74,9 @@ def train():
     neg_edge_index = negative_sampling(
         edge_index=data.train_pos_edge_index, num_nodes=data.num_nodes,
         num_neg_samples=data.train_pos_edge_index.size(1))
-
     optimizer.zero_grad()
-    z = model.encode(dataset.data.edge_type)
+    logging.warning(f'edge_type_shape_in_training = {(data.edge_type.shape)})')
+    z = model.encode(data.edge_type)
     link_logits = model.decode(z, data.train_pos_edge_index, neg_edge_index)
     link_labels = get_link_labels(data.train_pos_edge_index, neg_edge_index)
     loss = F.binary_cross_entropy_with_logits(link_logits, link_labels)

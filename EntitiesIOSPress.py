@@ -3,10 +3,11 @@ import pandas as pd
 import rdflib as rdf
 from torch_geometric.data import (InMemoryDataset, Data)
 from collections import Counter
+import logging
 
-
-
+logging.basicConfig(filename='RGCNConv.log', filemode='a', format='%(asctime)s %(message)s')
 class EntitiesIOSPress(InMemoryDataset):    
+
 
     def __init__(self):
         super(EntitiesIOSPress, self)
@@ -59,24 +60,24 @@ class EntitiesIOSPress(InMemoryDataset):
         edge_list = sorted(edge_list, key=lambda x: (x[0], x[1], x[2]))
         edge = torch.tensor(edge_list, dtype=torch.long).t().contiguous()
         edge_index, edge_type = edge[:2], edge[2]
+        logging.warning(f'edge = {torch.tensor(edge_list, dtype=torch.long).t().contiguous()}')
         print("Edge_index dim: " + str(len(edge_index[1])) + "Edge_type dim: " + str(len(edge_type)))
         train_y = torch.tensor(list(train_labels_set), dtype=torch.long)
         ######################################### ONE-HOT Enconding for node-feature matrix###################################################
         nodes_dict_final = {"Nodes" : nodes_subjects, "Features" : [i for i in range(len(nodes_objects))]} 
-        df = pd.DataFrame(nodes_dict_final)
-       
+        df = pd.DataFrame(nodes_dict_final)     
         ###############################################################################################################
 
         data = Data(edge_index=edge_index)
         f = df[['Nodes']].join(pd.get_dummies(df['Features']).add_prefix('FEATURE_')).groupby('Nodes').max()
         f_array = f.values
         f_tensor = torch.from_numpy(f_array)
-        data.x = f_tensor      
+        data.x = f_tensor 
+        data.edge_list = edge     
         data.edge_index = edge_index
         data.edge_type = edge_type 
         data.train_y = train_y
         data.num_nodes = edge_index.max().item() + 1
-        #print(data.num_nodes)
-        data.num_relations = len(relations_set)
-        data.num_classes = len(train_labels_set)
+        data.num_relations = edge_type.max().item() + 1
+        data.num_classes = data.train_y.max().item() + 1
         self.data = data
