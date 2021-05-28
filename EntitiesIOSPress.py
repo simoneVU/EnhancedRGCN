@@ -61,7 +61,7 @@ class EntitiesIOSPress(InMemoryDataset):
         edge = torch.tensor(edge_list, dtype=torch.long).t().contiguous()
         edge_index, edge_type = edge[:2], edge[2]
         logging.warning(f'edge = {torch.tensor(edge_list, dtype=torch.long).t().contiguous()}')
-        print("Edge_index dim: " + str(len(edge_index[1])) + "Edge_type dim: " + str(len(edge_type)))
+        #print("Edge_index dim: " + str(len(edge_index[1])) + "Edge_type dim: " + str(len(edge_type)))
         train_y = torch.tensor(list(train_labels_set), dtype=torch.long)
         ######################################### ONE-HOT Enconding for node-feature matrix###################################################
         nodes_dict_final = {"Nodes" : nodes_subjects, "Features" : [i for i in range(len(nodes_objects))]} 
