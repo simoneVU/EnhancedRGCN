@@ -1,6 +1,7 @@
 import torch
 import pandas as pd
 import rdflib as rdf
+import numpy as np
 from torch_geometric.data import (InMemoryDataset, Data)
 from collections import Counter
 import logging
@@ -43,8 +44,8 @@ class EntitiesIOSPress(InMemoryDataset):
         relations = []
         nodes_subjects = []
         nodes_objects = []
-        train_labels = {}
-        train_labels_set = set()
+        labels = {}
+        labels_set = set()
 
         for e1,r,e2 in g.triples((None, None, None)):
             if (e1 and r and e2) is not None:
@@ -54,15 +55,14 @@ class EntitiesIOSPress(InMemoryDataset):
             src, dst, rel = nodes_dict[e1], nodes_dict[e2], relations_dict[r]
             edge_list.append([src, dst, 2 * rel])
             edge_list.append([dst, src, 2 * rel + 1])
-            train_labels[src] = relations_dict[r]
-            train_labels_set.add(train_labels[src])
+            labels[src] = relations_dict[r]
+            labels_set.add(labels[src])
 
         edge_list = sorted(edge_list, key=lambda x: (x[0], x[1], x[2]))
         edge = torch.tensor(edge_list, dtype=torch.long).t().contiguous()
         edge_index, edge_type = edge[:2], edge[2]
-        logging.warning(f'edge = {torch.tensor(edge_list, dtype=torch.long).t().contiguous()}')
-        #print("Edge_index dim: " + str(len(edge_index[1])) + "Edge_type dim: " + str(len(edge_type)))
-        train_y = torch.tensor(list(train_labels_set), dtype=torch.long)
+
+        train_y = torch.tensor(list(labels_set), dtype=torch.long)
         ######################################### ONE-HOT Enconding for node-feature matrix###################################################
         nodes_dict_final = {"Nodes" : nodes_subjects, "Features" : [i for i in range(len(nodes_objects))]} 
         df = pd.DataFrame(nodes_dict_final)     

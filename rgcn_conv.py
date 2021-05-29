@@ -9,9 +9,9 @@ from torch.nn import Parameter
 from torch_scatter import scatter
 from torch_sparse import SparseTensor, matmul, masked_select_nnz
 from torch_geometric.nn.conv import MessagePassing
-
-from ..inits import glorot, zeros
-
+import logging 
+from inits import glorot, zeros
+logging.basicConfig(filename='RGCNConv.log', filemode='a', format='%(asctime)s %(message)s')
 
 @torch.jit._overload
 def masked_edge_index(edge_index, edge_mask):
@@ -24,8 +24,9 @@ def masked_edge_index(edge_index, edge_mask):
     # type: (SparseTensor, Tensor) -> SparseTensor
     pass
 
-#Here is the masked_edge_index function which does returns an empty tensor (in the pytorch folder this is in: pytorch_geometric/torch_geometric/nn/models/rgcn_conv.py)
+
 def masked_edge_index(edge_index, edge_mask):
+#    logging.warning(f'edge_index_shape is = {edge_index.shape}, edge_mask_shape is = {edge_mask.shape} and edge_index[:, edge_mask] is = {edge_index[:, edge_mask]}')
     if isinstance(edge_index, Tensor):
         return edge_index[:, edge_mask]
     else:
@@ -92,8 +93,7 @@ class RGCNConv(MessagePassing):
                  aggr: str = 'mean',
                  root_weight: bool = True,
                  bias: bool = True, **kwargs):  # yapf: disable
-                 
-        #Here is the variable node_dim = 0
+
         super(RGCNConv, self).__init__(aggr=aggr, node_dim=0, **kwargs)
 
         if num_bases is not None and num_blocks is not None:
@@ -163,8 +163,9 @@ class RGCNConv(MessagePassing):
                 :class:`torch_sparse.tensor.SparseTensor`.
                 (default: :obj:`None`)
         """
-
+        logging.warning(f'edge_index_in_forward_start is = {edge_index.shape}')
         # Convert input features to a pair of node features or node indices.
+        #print("x has shape: " + str(x.shape))       
         x_l: OptTensor = None
         if isinstance(x, tuple):
             x_l = x[0]
@@ -176,11 +177,11 @@ class RGCNConv(MessagePassing):
         x_r: Tensor = x_l
         if isinstance(x, tuple):
             x_r = x[1]
-
+        #print(x_l)
         size = (x_l.size(0), x_r.size(0))
 
         if isinstance(edge_index, SparseTensor):
-            edge_type = edge_index.storage.value()
+            edge_type = edge_index.storage.value()  
         assert edge_type is not None
 
         # propagate_type: (x: Tensor)
@@ -204,14 +205,23 @@ class RGCNConv(MessagePassing):
                 h = torch.einsum('abc,bcd->abd', h, weight[i])
                 out += h.contiguous().view(-1, self.out_channels)
 
-        else:  # No regularization/Basis-decomposition ========================
+        else: # No regularization/Basis-decomposition ========================
             for i in range(self.num_relations):
-                tmp = masked_edge_index(edge_index, edge_type == i)
-
+                #print(masked_edge_index(edge_index, edge_type == i))
+                #logging.warning(f'edge_index is = {edge_index}, edge_type_dim = {(edge_type.shape)} ,edge_type_i is = {edge_type == i} and edge_type_i_dim = {(edge_type == i).shape})') 
+                tmp = masked_edge_index(edge_index, edge_type == i) 
+                #logging.warning(f'tmp is = {tmp},size is = {size}') 
                 if x_l.dtype == torch.long:
-                    out += self.propagate(tmp, x=weight[i, x_l], size=size)
+
+                   out += self.propagate(tmp, x=weight[i, x_l], size=size)
+                  
+                    #out += self.propagate(edge_index, x=weight[i, x_l], size=size)
                 else:
+                   
+                    #print("Size is:" + str(size))
+                    logging.warning(f'tmp is = {tmp.shape} and x_l is = {x_l.shape} and size is = {size}') 
                     h = self.propagate(tmp, x=x_l, size=size)
+                    #h = self.propagate(edge_index, x=x_l, size=size)
                     out = out + (h @ weight[i])
 
         root = self.root

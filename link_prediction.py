@@ -1,11 +1,12 @@
+from numpy.core.arrayprint import printoptions
 from  EntitiesIOSPress import EntitiesIOSPress
 
 import torch
 import torch.nn.functional as F
 from sklearn.metrics import roc_auc_score
 
-from torch_geometric.utils import negative_sampling
-from torch_geometric.nn import RGCNConv
+from negative_sampling import negative_sampling
+from rgcn_conv import RGCNConv
 from train_test_split_edges import train_test_split_edges
 import logging
 
@@ -34,24 +35,20 @@ class Net(torch.nn.Module):
         super(Net, self).__init__()
         self.conv1 = RGCNConv(data.num_nodes, 16, data.num_relations,
                                 num_bases=30)
-        num_nodes_to_log = str(data.num_nodes)
-        num_rels_to_log = str(data.num_relations)
-        #logging.warning(f'RGCNConv({num_nodes_to_log}, 16, {num_rels_to_log})')
         self.conv2 = RGCNConv(16, data.num_classes, data.num_relations,
                               num_bases=30)
 
     def encode(self, edge_index, edge_type):
         #print("Edge_index dim: " + str(data.edge_index)) returns None???
         #logging.warning(f'self.conv1(data.x = {data.x}, data.train_pos_edge_index_shape = {data.train_pos_edge_index.shape}, edge_type_shape = {(edge_type.shape)})')
-        x = F.relu(self.conv1(None, edge_index, edge_type))
-        x = self.conv2(x, edge_index, edge_type)
-        return x
+        x = self.conv1(None, edge_index, edge_type)
+        x.relu() 
+        return self.conv2(x, edge_index, edge_type)
 
 
     def decode(self, z, pos_edge_index, neg_edge_index):
-        edge_index = torch.cat([pos_edge_index, neg_edge_index], dim=-1)
-        logits = (z[edge_index[0]] * z[edge_index[1]]).sum(dim=-1)
-        return logits
+         edge_index = torch.cat([pos_edge_index, neg_edge_index], dim=-1)
+         return (z[edge_index[0]] * z[edge_index[1]]).sum(dim=-1)
 
     def decode_all(self, z):
         prob_adj = z @ z.t()
@@ -99,22 +96,26 @@ def test(data):
         pos_edge_index = data[f'{prefix}_pos_edge_index']
         neg_edge_index = data[f'{prefix}_neg_edge_index']
         link_logits = model.decode(z, pos_edge_index, neg_edge_index)
+        print(str(link_logits) + "this is link_logits")
         link_probs = link_logits.sigmoid()
         link_labels = get_link_labels(pos_edge_index, neg_edge_index)
         results.append(roc_auc_score(link_labels.cpu(), link_probs.cpu()))
     return results
 
-best_val_perf = test_perf = 0
+best_val_auc = test_auc = 0
 for epoch in range(1, 101):
     print('Start Training')
     train_loss = train(data)
     print('Finish Training')
-    val_perf, tmp_test_perf = test(data)
-    if val_perf > best_val_perf:
-        best_val_perf = val_perf
-        test_perf = tmp_test_perf
+    print("Start Test Phase")
+    val_auc, tmp_test_auc = test(data)
+    print("Finish Test Phase")
+    print("val_auc: " + str(val_auc) + "> " + str(best_val_auc) + "best_value_auc")
+    if val_auc > best_val_auc:
+        best_val_auc = val_auc
+        test_auc= tmp_test_auc
     log = 'Epoch: {:03d}, Loss: {:.4f}, Val: {:.4f}, Test: {:.4f}'
-    print(log.format(epoch, train_loss, best_val_perf, test_perf))
+    print(log.format(epoch, train_loss, best_val_auc, test_auc))
 
 z = model.encode(data.x, data.train_pos_edge_index)
 final_edge_index = model.decode_all(z)
