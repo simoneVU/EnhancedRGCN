@@ -28,8 +28,10 @@ def masked_edge_index(edge_index, edge_mask):
 def masked_edge_index(edge_index, edge_mask):
 #    logging.warning(f'edge_index_shape is = {edge_index.shape}, edge_mask_shape is = {edge_mask.shape} and edge_index[:, edge_mask] is = {edge_index[:, edge_mask]}')
     if isinstance(edge_index, Tensor):
+        print("If edge_index is a Tensor " + str(edge_index.type))
         return edge_index[:, edge_mask]
     else:
+        print("Otherwise")
         return masked_select_nnz(edge_index, edge_mask, layout='coo')
 
 

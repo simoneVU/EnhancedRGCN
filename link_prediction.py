@@ -96,7 +96,7 @@ def test(data):
         pos_edge_index = data[f'{prefix}_pos_edge_index']
         neg_edge_index = data[f'{prefix}_neg_edge_index']
         link_logits = model.decode(z, pos_edge_index, neg_edge_index)
-        print(str(link_logits) + "this is link_logits")
+        #print(str(link_logits) + "this is link_logits")
         link_probs = link_logits.sigmoid()
         link_labels = get_link_labels(pos_edge_index, neg_edge_index)
         results.append(roc_auc_score(link_labels.cpu(), link_probs.cpu()))
