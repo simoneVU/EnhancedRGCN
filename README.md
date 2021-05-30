@@ -5,8 +5,8 @@
 1. The general installation instruction for Conda can be found[here](https://docs.conda.io/projects/continuumio-conda/en/latest/user-guide/install/index.html).
   1. For Windows users, the specific instructions can be found [here](https://docs.conda.io/projects/continuumio-conda/en/latest/user-guide/install/windows.html)
   2. For Mac OS X users, the specific instructions can be found [here](https://docs.conda.io/projects/continuumio-conda/en/latest/user-guide/install/windows.html)
-    * If you are on Mac and using the zsh with iTerm2,then, follow [this guide](https://medium.com/@sumitmenon/how-to-get-anaconda-to-work-with-oh-my-zsh-on-mac-os-x-7c1c7247d896) if the jupyter _conda_ command is not found.
-    * Another option for MAC OS X user would be running the followinf script:
+    *If you are on Mac and using the zsh with iTerm2,then, follow [this guide](https://medium.com/@sumitmenon/how-to-get-anaconda-to-work-with-oh-my-zsh-on-mac-os-x-7c1c7247d896) if the jupyter _conda_ command is not found.
+    *Another option for MAC OS X user would be running the followinf script:
    ~~~~
   'wget https://repo.anaconda.com/miniconda/Miniconda3-latest-MacOSX-x86_64.sh\
     -O ~/miniconda.sh
