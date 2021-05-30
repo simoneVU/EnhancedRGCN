@@ -5,8 +5,8 @@
 1. The general installation instruction for Conda can be found[here](https://docs.conda.io/projects/continuumio-conda/en/latest/user-guide/install/index.html).
   1. For Windows users, the specific instructions can be found [here](https://docs.conda.io/projects/continuumio-conda/en/latest/user-guide/install/windows.html)
   2. For Mac OS X users, the specific instructions can be found [here](https://docs.conda.io/projects/continuumio-conda/en/latest/user-guide/install/windows.html)
-    *If you are on Mac and using the zsh with iTerm2,then, follow [this guide](https://medium.com/@sumitmenon/how-to-get-anaconda-to-work-with-oh-my-zsh-on-mac-os-x-7c1c7247d896) if the jupyter _conda_ command is not found.
-    *Another option for MAC OS X user would be running the followinf script:
+      * If you are on Mac and using the zsh with iTerm2,then, follow [this guide](https://medium.com/@sumitmenon/how-to-get-anaconda-to-work-with-oh-my-zsh-on-mac-os-x-7c1c7247d896) if the jupyter _conda_ command is not found.
+      * Another option for MAC OS X user would be running the followinf script:
    ~~~~
   'wget https://repo.anaconda.com/miniconda/Miniconda3-latest-MacOSX-x86_64.sh\
     -O ~/miniconda.sh
@@ -45,5 +45,5 @@ source activate conda3.6
 ### PyTorch Geometric Installation
 2) The general installation instruction for pytorch_geometric can be found [here](https://pytorch-geometric.readthedocs.io/en/latest/notes/installation.html#).
     1. As first, at least PyTorch 1.4.0 has to be installed. If it is not installed, there are different option for different users:
-       * If you are a Windows user, this [guide](https://medium.com/@bryant.kou/how-to-install-pytorch-on-windows-step-by-step-cc4d004adb2a) should lead you to a successful pytorch installation with conda.
-       * If you are a Linux or Mac OS X user you can run 'conda install pytorch torchvision -c pytorch' in the terminal to install it.
+        * If you are a Windows user, this [guide](https://medium.com/@bryant.kou/how-to-install-pytorch-on-windows-step-by-step-cc4d004adb2a) should lead you to a successful pytorch installation with conda.
+        * If you are a Linux or Mac OS X user you can run 'conda install pytorch torchvision -c pytorch' in the terminal to install it.
