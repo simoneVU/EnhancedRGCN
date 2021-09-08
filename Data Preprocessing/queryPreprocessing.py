@@ -3,7 +3,7 @@ import rdflib as rdf
 from collections import defaultdict
 
 g = Graph()
-graph = g.parse(location='more_than_10K.ttl', format='ttl')
+graph = g.parse(location='TriplydbJS/more_than_10K.ttl', format='ttl')
 list_author_list_dict = defaultdict(list)
 
 #Add author lists for sameAs authors
