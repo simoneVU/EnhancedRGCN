@@ -11,11 +11,11 @@ async function run() {
     // get organization that contains the to query Dataset.
     const user = await app.getUser("SimoneColombo");
     // Get query information
-    const query = await user.getQuery("Authors-Names-1");
+    const query = await user.getQuery("IOS-Press-K-Gfor-RGCN");
     // for construct and describe queries
     const results = query.results().statements();
     // saving the results to file
-    await results.toFile(`./results.ttl`);
+    await results.toFile(`./more_than_10K.ttl`);
 }
 exports.run = run;
 run().catch((e) => {
