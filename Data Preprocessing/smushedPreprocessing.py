@@ -5,7 +5,7 @@ from urllib.parse import urlparse;
 from collections import defaultdict
 import hashlib
 g = Graph()
-graph = g.parse(location='/Users/simonecolombo/Desktop/VU_Amsterdam_CS_2020_2021/Triply:BachThesis/Bachelor-Thesis/10KwithoutSameAs.ttl', format='ttl')
+graph = g.parse(location='10KWithoutSameAs.ttl', format='ttl')
 
 list_author_list_dict = defaultdict(list)
 
@@ -35,4 +35,4 @@ for e1,r,e2 in graph.triples((None, rdf.term.URIRef('https://schema.org/inAuthor
   graph.remove((e1,r,e2))
 
 #Write the result to the turtle file updated_results.ttl
-graph.serialize(destination="10K_dataset_without_final.ttl",format='turtle')
+graph.serialize(destination="10K_dataset_without_SameAs_final.ttl",format='turtle')
