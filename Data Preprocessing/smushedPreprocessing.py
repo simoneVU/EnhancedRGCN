@@ -5,7 +5,7 @@ from urllib.parse import urlparse;
 from collections import defaultdict
 import hashlib
 g = Graph()
-graph = g.parse(location='10KWithoutSameAs.ttl', format='ttl')
+graph = g.parse(location='10KSmushedSameAs.ttl', format='ttl')
 
 list_author_list_dict = defaultdict(list)
 
