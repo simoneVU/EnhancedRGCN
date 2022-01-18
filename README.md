@@ -1,9 +1,8 @@
 # Potential Energy to Improve Link Prediction with Relational Graph Neural Networks
 <p align="center">
-<img src="https://img.shields.io/badge/python-3.8-blue.svg">
-<img src="https://img.shields.io/badge/pytorchGometric-3.8-orange.svg">
-<a href="https://github.com/pyg-team/pytorch_geometric">
-    <img src="https://img.shields.io/badge/License-MIT-blue.svg"></a>
+<a href="https://github.com/pytorch/pytorch"><img src="https://img.shields.io/badge/pyTorch-11.1-blue.svg"></a>
+<a href="https://github.com/pyg-team/pytorch_geometric"><img src="https://img.shields.io/badge/pyorchGometric-1.7.2-orange.svg"></a>
+    <img src="https://img.shields.io/badge/License-MIT-blue.svg">
 <a href="https://arxiv.org/abs/2106.08166"><img src="http://img.shields.io/badge/Paper-PDF-red.svg"></a>
 </p>
 <p align="center">
