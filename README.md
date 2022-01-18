@@ -3,7 +3,7 @@
 <a href="https://github.com/pytorch/pytorch"><img src="https://img.shields.io/badge/pyTorch-11.1-blue.svg"></a>
 <a href="https://github.com/pyg-team/pytorch_geometric"><img src="https://img.shields.io/badge/pyorchGometric-1.7.2-orange.svg"></a>
     <img src="https://img.shields.io/badge/License-MIT-blue.svg">
-<a href="https://arxiv.org/abs/2106.08166"><img src="http://img.shields.io/badge/Paper-PDF-red.svg"></a>
+<a href=""><img src="http://img.shields.io/badge/Paper-PDF-red.svg"></a>
 </p>
 <p align="center">
 <img width="674" alt="Screen Shot 2022-01-18 at 4 37 11 PM" src="https://user-images.githubusercontent.com/60779914/149968740-e19b7016-a42a-4dfa-91f8-24f26dd74062.png">
