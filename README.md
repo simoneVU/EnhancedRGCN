@@ -2,7 +2,7 @@
 <p align="center">
 <a href="https://github.com/pytorch/pytorch"><img src="https://img.shields.io/badge/pyTorch-11.1-blue.svg"></a>
 <a href="https://github.com/pyg-team/pytorch_geometric"><img src="https://img.shields.io/badge/pyorchGometric-1.7.2-orange.svg"></a>
-    <img src="https://img.shields.io/badge/License-MIT-blue.svg">
+<a href=" https://github.com/simoneVU/EnhancedRGCN/blob/main/LICENSE"><img src="https://img.shields.io/badge/License-MIT-blue.svg"></a>
 <a href=""><img src="http://img.shields.io/badge/Paper-PDF-red.svg"></a>
 </p>
 <p align="center">
