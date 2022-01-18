@@ -1,4 +1,33 @@
-# Bachelor-Thesis
+# Potential Energy to Improve Link Prediction with Relational Graph Neural Networks
+<p align="center">
+<img src="https://img.shields.io/badge/python-3.8-blue.svg">
+<img src="https://img.shields.io/badge/pytorchGometric-3.8-orange.svg">
+<a href="https://github.com/pyg-team/pytorch_geometric">
+    <img src="https://img.shields.io/badge/License-MIT-blue.svg"></a>
+<a href="https://arxiv.org/abs/2106.08166"><img src="http://img.shields.io/badge/Paper-PDF-red.svg"></a>
+</p>
+<p align="center">
+<img width="674" alt="Screen Shot 2022-01-18 at 4 37 11 PM" src="https://user-images.githubusercontent.com/60779914/149968740-e19b7016-a42a-4dfa-91f8-24f26dd74062.png">
+</p>
+
+This repository contains the code used for the experiments in the paper.
+
+```
+Potential Energy to Improve Link Prediction with Relational Graph Neural Networks.
+Simone Colombo, Dimitris Alivanistos and Michael Cochez
+```
+
+**Abstract**: Potential Energy (PE) between 2 bodies with mass, refers to the relative gravitational pull between them. Analogously, in the context of a graph, nodes can thought of as objects where a) the product of the degrees of nodes acts as a proxy for mass, b) the clustering coefficients of common neighbours as a proxy for gravitational acceleration, and c) the inverse of the shortest distance between nodes as a proxy for distance in space, which allows for PE calculation as introduced in prior work. In this work, we are investigating the effects of incorporating PE in Link Prediction (LP) with Relational Graph Convolutional Networks (R-GCN). Specifically, we explore the benefits of including PE calculation as an informative prior to the LP task and in a follow-up experiment as a learnable feature to predict. We performed several experiments and show that considering PE in the LP process has certain advantages and find that the information PE provides was not captured by the embeddings produced by the R-GCN.
+
+## Model descriptions
+**Vanilla R-GCN**: The R-GCN for LP with an additional Dense Layer to reduce the dimension of the textual embeddings
+
+**eR-GCN**: The energized R-GCN - utilizing the additional signal of PE for prediction, note that PE comes directly from the input graph topology, also note the trainable parameter 𝛼 that represents signal weight. 
+
+**PE Estimator**: An MLP-Regressor trained to predict the PE between nodes. 
+
+**eR-GCN-MLP**: The combination of eR-GCN and PE estimator that optimizes 𝛼 based on both the R-GCN and the PE Estimator. The light blue box indicates frozen parameters, which allows us to isolate the effects of specific parts in the architecture.
+
 
 ## Installation
 ### Conda Installation
