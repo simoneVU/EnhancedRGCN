@@ -62,7 +62,7 @@ def test(data):
 
 best_val_auc = test_auc = 0
 
-for epoch in range(100):
+for epoch in range(300):
     train_loss = train(data) 
     val_auc, tmp_test_auc = test(data)
     if val_auc > best_val_auc:
