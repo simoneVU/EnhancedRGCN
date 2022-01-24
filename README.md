@@ -77,4 +77,11 @@ source activate conda3.6
 3) **For Mac OS X** users only, it is possible to use the script pyg_setup.sh by running 'sh ./pyg_setup.sh' in the terminal and this will create the conda environment, activate it, install pytorch and install all the necessary dependencies for pytorch_geometric.
 
 ## Run the code
-Once pytorch_geometric is installed, copy the pytorch_geometric folder from github to your own directory with 'git clone https://github.com/rusty1s/pytorch_geometric.git'. Then, do the same for the files in this repository with 'git clone https://github.com/simoneVU/Bachelor-Thesis.git'. Therefore, to run the code do '/opt/anaconda3/envs/pyg/bin/python /Users/simonecolombo/Desktop/VU_Amsterdam_CS_2020_2021/Triply:BachThesis/Bachelor-Thesis/link_prediction.py'.
+### Run the RGCN with MLP
+In the folder src, run the following python files in the sequence below as follows:
+- `python3 train_standard_RGCN.py` (in order to train the vanilla RGCN)
+- `python3 train_PE_estimator.py` (in order to train the PE_estimator only by freezing the vanilla RGCN)
+- `python3 train_R_GCN_MLP.py` (in order to train the RGCN with the MLP)
+### Run the eRGCN 
+- `python3 train_standard_RGCN.py` (in order to train the vanilla RGCN)
+- `python3 train_eRGCN.py` (in order to train the eRGCN)
