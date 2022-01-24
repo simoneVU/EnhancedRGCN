@@ -75,7 +75,7 @@ def test_optimized_RGCN(data):
 
 #Train RGCN with DistMult again
 best_val_auc = test_auc = 0
-for epoch in range(1, 1000):
+for epoch in range(1, 300):
     train_loss = train_optimized_RGCN(data,model)  
     val_auc, tmp_test_auc = test_optimized_RGCN(data)
     if val_auc > best_val_auc:
